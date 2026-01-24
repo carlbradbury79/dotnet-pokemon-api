@@ -26,4 +26,14 @@ app.MapGet("/pokemon/{name}", async (string name, IPokemonService pokemonService
     return Results.Ok(pokemon);
 });
 
+app.MapGet("/random", async (IPokemonService pokemonService) =>
+{
+    var pokemon = await pokemonService.GetRandomPokemonAsync();
+    if (pokemon == null)
+    {
+        return Results.NotFound(new { message = "No random Pokemon found" });
+    }
+    return Results.Ok(pokemon);
+});
+
 app.Run();
