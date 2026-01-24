@@ -1,0 +1,16 @@
+@pokemonApi_HostAddress = http://localhost:5120
+
+GET {{pokemonApi_HostAddress}}/
+Accept: application/json
+
+###
+
+GET {{pokemonApi_HostAddress}}/pokemon/pikachu
+Accept: application/json
+
+###
+
+GET {{pokemonApi_HostAddress}}/pokemon/charizard
+Accept: application/json
+
+###
