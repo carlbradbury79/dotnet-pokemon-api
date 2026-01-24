@@ -1,12 +1,15 @@
 namespace PokemonApi.Models;
 
+using System.Text.Json.Serialization;
+
 public class PokemonApiResponse
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public List<TypeSlot> Types { get; set; } = new();
     public Sprites Sprites { get; set; } = new();
-    public int Base_experience { get; set; } = 0;
+    [JsonPropertyName("base_experience")]
+    public int BaseExperience { get; set; } = 0;
     public List<Abilities> Abilities { get; set; } = new();
     
 }
@@ -25,6 +28,7 @@ public class TypeInfo
 
 public class Sprites
 {
+    [JsonPropertyName("front_default")]
     public string FrontDefault { get; set; } = string.Empty;
 }
 

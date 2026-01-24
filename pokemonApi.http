@@ -14,3 +14,6 @@ GET {{pokemonApi_HostAddress}}/pokemon/charizard
 Accept: application/json
 
 ###
+
+GET {{pokemonApi_HostAddress}}/random
+Accept: application/json
