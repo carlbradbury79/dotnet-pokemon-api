@@ -37,7 +37,7 @@ public class PokemonService : IPokemonService
 
     public async Task<RandomPokemonApiResponse?> GetRandomPokemonAsync()
     {
-        var randomPokemonNumber = new Random().Next(1, 1350); 
+        var randomPokemonNumber = Random.Shared.Next(1, _settings.MaxPokemonCount + 1); 
         var url = $"{_settings.BaseUrl}pokemon?limit=1&offset={randomPokemonNumber - 1}";
 
         try
