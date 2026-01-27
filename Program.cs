@@ -3,17 +3,38 @@ using PokemonApi.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Bind settings from appsettings.json
+// ============================================
+// PHASE 1: Basic API Setup
+// Learning: Minimal APIs, Dependency Injection, Configuration
+// ============================================
+
+// 1. Configure PokemonApiSettings from appsettings.json
+//    This reads the "PokemonApi" section and makes it available throughout the app
 builder.Services.Configure<PokemonApiSettings>(
     builder.Configuration.GetSection("PokemonApi"));
 
-// Register HttpClient + your service
+// 2. Register HttpClient and PokemonService
+//    Dependency Injection: We register the service so it's automatically provided where needed
+//    The using statement imports the namespace containing these interfaces
 builder.Services.AddHttpClient<IPokemonService, PokemonService>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Pokémon API is running!");
+// ============================================
+// ENDPOINTS
+// ============================================
 
+// Health check - verify API is running
+app.MapGet("/", () => "Pokémon API is running!")
+    .WithName("HealthCheck")
+    .WithDescription("Verify the API is running");
+
+// Get a specific Pokemon by name
+// Example: GET /pokemon/pikachu
+// Explanation: 
+//   - {name} is a route parameter
+//   - IPokemonService is injected by the DI container
+//   - async/await means the thread isn't blocked while waiting for external API
 app.MapGet("/pokemon/{name}", async (string name, IPokemonService pokemonService) =>
 {
     var pokemon = await pokemonService.GetPokemonAsync(name);
@@ -24,16 +45,24 @@ app.MapGet("/pokemon/{name}", async (string name, IPokemonService pokemonService
     }
     
     return Results.Ok(pokemon);
-});
+})
+.WithName("GetPokemon")
+.WithDescription("Get a specific Pokemon by name");
 
+// Get a random Pokemon
+// This demonstrates more complex service logic
 app.MapGet("/random", async (IPokemonService pokemonService) =>
 {
     var pokemon = await pokemonService.GetRandomPokemonAsync();
+    
     if (pokemon == null)
     {
         return Results.NotFound(new { message = "No random Pokemon found" });
     }
+    
     return Results.Ok(pokemon);
-});
+})
+.WithName("GetRandomPokemon")
+.WithDescription("Get a random Pokemon");
 
 app.Run();

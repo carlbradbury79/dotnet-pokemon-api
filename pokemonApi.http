@@ -1,10 +1,13 @@
 @pokemonApi_HostAddress = http://localhost:5120
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjQ1MDZkNGE2LTdjYTctNGQwNy1hNGQwLTYyOTVhYjY4MGUwZiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJwbGF5ZXIxIiwiZXhwIjoxNzY5NjQzMDUyLCJpc3MiOiJwb2tlbW9uLWFwaSIsImF1ZCI6InBva2Vtb24tYXBwIn0.MNrjIbV8jhD-dEMImILLpAXIAvtBkVE2xcbFcRYCsl0
 
+// Health check
 GET {{pokemonApi_HostAddress}}/
 Accept: application/json
 
 ###
 
+// Get specific Pokemon
 GET {{pokemonApi_HostAddress}}/pokemon/pikachu
 Accept: application/json
 
@@ -15,5 +18,57 @@ Accept: application/json
 
 ###
 
+// Get random Pokemon
 GET {{pokemonApi_HostAddress}}/random
 Accept: application/json
+
+###
+
+// Register new player
+POST {{pokemonApi_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player1",
+  "password": "password123"
+}
+
+###
+
+// Login existing player
+POST {{pokemonApi_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "player1",
+  "password": "password123"
+}
+
+###
+
+// Get player stats (requires token - set @token variable above)
+GET {{pokemonApi_HostAddress}}/player/stats
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+// Get player game history (requires token)
+GET {{pokemonApi_HostAddress}}/player/history
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+// Record game result (requires token)
+POST {{pokemonApi_HostAddress}}/player/game-result
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pokemonId": 25,
+  "pokemonName": "pikachu",
+  "attemptsUsed": 5,
+  "isWon": true,
+  "timeTakenSeconds": 120.5
+}
