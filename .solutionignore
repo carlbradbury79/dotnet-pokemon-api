@@ -1,0 +1,5 @@
+# .solutionignore - Exclude test projects from solution auto-discovery
+# This prevents .NET from auto-discovering and compiling test projects
+# when building the main solution
+
+tests/
