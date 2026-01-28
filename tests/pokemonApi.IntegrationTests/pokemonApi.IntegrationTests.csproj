@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <!-- Suppress generated assembly info to avoid duplicate attribute errors in .NET 10 -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +24,7 @@
 
   <ItemGroup>
     <!-- Reference the main project -->
-    <ProjectReference Include="../pokemonApi.csproj" />
+    <ProjectReference Include="../../pokemonApi.csproj" />
   </ItemGroup>
 
 </Project>
