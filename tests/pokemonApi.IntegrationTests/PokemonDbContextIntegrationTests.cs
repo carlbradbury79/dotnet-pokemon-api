@@ -2,9 +2,7 @@
 // using Testcontainers to spin up a real PostgreSQL database for testing.
 
 using System;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
 using pokemonApi.Data;
 using pokemonApi.Models;
 
@@ -17,11 +15,5 @@ namespace pokemonApi.IntegrationTests;
 /// </summary>
 public class PokemonDbContextIntegrationTests
 {
-    [Fact]
-    public void DbContext_ShouldBeCreatable()
-    {
-        // This test just verifies the DbContext can be instantiated
-        // Real integration tests will use testcontainers in the next phase
-        Assert.NotNull(typeof(PokemonDbContext));
-    }
+    // Placeholder class - actual tests will be added in Lesson 2
 }
