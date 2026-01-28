@@ -1,7 +1,16 @@
 using PokemonApi.Services;
 using PokemonApi.Settings;
+using Microsoft.EntityFrameworkCore;
+using pokemonApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Learning Point: Add DbContext with PostgreSQL connection string
+// The connection string is read from appsettings.json (or env vars in production)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<PokemonDbContext>(options =>
+    options.UseNpgsql(connectionString)
+);
 
 // Bind settings from appsettings.json
 builder.Services.Configure<PokemonApiSettings>(
