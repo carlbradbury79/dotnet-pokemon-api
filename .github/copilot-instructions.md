@@ -42,6 +42,11 @@ namespace pokemonApi.Settings;        // Configuration models
 - Foreign keys use `{EntityName}Id` pattern (UserId, GameId)
 - Use cascade delete strategically (User.Games deletes when user deleted)
 
+### Branching Strategy
+
+- `main`: Production-ready code
+- `feature/{n}-{description}`: Feature branches for each lesson
+
 ---
 
 ## Lesson Roadmap
