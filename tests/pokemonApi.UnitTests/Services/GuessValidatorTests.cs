@@ -51,8 +51,8 @@ public class GuessValidatorTests
     #region Mixed Cases
 
     [Theory]
-    [InlineData("PLANT", "SLANT")]  // P wrong, L correct, A correct, N correct, T correct
-    [InlineData("ROBOT", "NOTCH")]  // R wrong pos, O wrong pos, B not in, O not in (duplicate), T correct
+    [InlineData("PLANT", "SLANT")]
+    [InlineData("ROBOT", "NOTCH")]
     public void ValidateGuess_MixedStatuses(string guess, string answer)
     {
         var result = _validator.ValidateGuess(guess, answer);
