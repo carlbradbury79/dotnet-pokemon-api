@@ -1,9 +1,44 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using pokemonApi.Data;
+using pokemonApi.Services;
+using pokemonApi.Settings;
 using PokemonApi.Services;
 using PokemonApi.Settings;
-using Microsoft.EntityFrameworkCore;
-using pokemonApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure JWT settings
+var jwtSettings = new JwtSettings();
+builder.Configuration.GetSection("Jwt").Bind(jwtSettings);
+builder.Services.AddSingleton(jwtSettings);
+
+// Add authentication services
+var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidateAudience = true,
+            ValidAudience = jwtSettings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 // Learning Point: Add DbContext with PostgreSQL connection string
 // The connection string is read from appsettings.json (or env vars in production)
@@ -16,12 +51,30 @@ builder.Services.AddDbContext<PokemonDbContext>(options =>
 builder.Services.Configure<PokemonApiSettings>(
     builder.Configuration.GetSection("PokemonApi"));
 
-// Register HttpClient + your service
+// Register services
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IPokemonService, PokemonService>();
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapGet("/", () => "Pokémon API is running!");
+
+// Auth endpoints
+app.MapPost("/auth/register", async (RegisterRequest request, IAuthService authService) =>
+{
+    var response = await authService.RegisterAsync(request);
+    return response.Success ? Results.Ok(response) : Results.BadRequest(response);
+});
+
+app.MapPost("/auth/login", async (LoginRequest request, IAuthService authService) =>
+{
+    var response = await authService.LoginAsync(request);
+    return response.Success ? Results.Ok(response) : Results.Unauthorized();
+});
 
 app.MapGet("/pokemon/{name}", async (string name, IPokemonService pokemonService) =>
 {

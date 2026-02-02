@@ -14,7 +14,8 @@
 **Status**:
 
 - ✅ Lesson 1 Complete: Database foundation (5 entities, migrations, EF Core setup)
-- 🔄 Lesson 2 In Progress: Game logic & unit testing
+- ✅ Lesson 2 Complete: Game logic & unit testing (Wordle validator, 28 tests)
+- 🔄 Lesson 3 In Progress: User authentication & JWT
 
 ---
 
@@ -81,20 +82,53 @@ namespace pokemonApi.Settings;        // Configuration models
 - **Edge Cases**: Handling tricky Wordle scenarios (duplicate letters in different positions)
 - **Code Quality**: Guard clauses prevent bugs, make code readable
 
-**Deliverables**:
+### ✅ Lesson 2: Game Logic & Unit Testing (COMPLETE)
 
-- `Services/IGuessValidator.cs` - Interface defining letter validation
-- `Services/GuessValidator.cs` - Implementation with algorithm
-- `tests/pokemonApi.UnitTests/Services/GuessValidatorTests.cs` - Comprehensive test cases
+**Completed**:
+
+- Implemented `IGuessValidator` interface with LetterStatus enum
+- Created `GuessValidator` with two-pass algorithm for correct Wordle logic
+- Wrote 28 comprehensive unit tests with perfect coverage:
+  - Basic cases (all correct, all wrong, mixed)
+  - Wrong position scenarios
+  - Duplicate letter edge cases (critical for Wordle accuracy)
+  - Case insensitivity handling
+  - Input validation and error handling
+  - Real Wordle examples
+- Fixed .NET 10 build issues and test compilation
+
+**Key Learning**: Two-pass algorithm handles duplicate letters correctly. Pass 1 marks exact matches, Pass 2 checks remaining letters. Array initialization is critical - must default to NotInWord, not Correct.
 
 ---
 
-### Lesson 3: User Authentication & JWT
+### 🔄 Lesson 3: User Authentication & JWT (IN PROGRESS)
 
-- User registration/login endpoints
-- JWT token generation and validation
-- Password hashing with BCrypt (already installed)
-- Authorization middleware
+**Objectives**:
+
+1. Implement JWT token generation and validation
+2. Create user registration/login endpoints
+3. Hash passwords securely with BCrypt
+4. Add authentication middleware to Program.cs
+
+**What You'll Learn**:
+
+- **JWT Tokens**: Token structure, claims, signing, validation
+- **Security**: Password hashing, token expiration, signature verification
+- **Async/Await**: Database operations in auth service
+- **Error Handling**: Graceful failures for duplicate users, invalid credentials
+
+**Deliverables**:
+
+- `Services/ITokenService.cs` - JWT token interface
+- `Services/TokenService.cs` - Token generation and validation implementation
+- `Services/IAuthService.cs` - Auth service interface with request/response records
+- `Services/AuthService.cs` - Registration and login implementation
+- `Settings/JwtSettings.cs` - JWT configuration model
+- `tests/pokemonApi.UnitTests/Services/AuthServiceTests.cs` - 10 comprehensive tests
+- Updated `Program.cs` with JWT middleware and auth endpoints
+- Updated `appsettings.json` with JWT settings
+
+---
 
 ### Lesson 4: Game Session Management
 
