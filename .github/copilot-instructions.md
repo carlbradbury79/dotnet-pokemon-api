@@ -129,7 +129,7 @@ When you ask for help, I will:
 4. **Give hands-on instructions** - Exactly what to type and why
 5. **Connect to existing code** - Relate new concepts to what you've already learned
 6. **Encourage best practices** - Clean code, testing, maintainability
-7. **Link to documentation** - when there is option for further reading to dive deeper
+7. **Link to documentation** - when there is an option for further reading to dive deeper
 
 ---
 
