@@ -138,13 +138,15 @@ public class GuessValidatorTests
     [Fact]
     public void ValidateGuess_NullGuess_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => _validator.ValidateGuess(null!, "PIKACHU"));
+        string? guess = null;
+        Assert.Throws<ArgumentException>(() => _validator.ValidateGuess(guess, "PIKACHU"));
     }
 
     [Fact]
     public void ValidateGuess_NullAnswer_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => _validator.ValidateGuess("PIKACHU", null!));
+        string? answer = null;
+        Assert.Throws<ArgumentException>(() => _validator.ValidateGuess("PIKACHU", answer));
     }
 
     [Fact]
